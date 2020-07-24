@@ -1,0 +1,44 @@
+/* BASIC SETUP */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: #000000;
+}
+
+/* MAIN NAVIGATION BAR */
+.title {
+  float: left;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+.main-nav {
+  float: right;
+  list-style: none;
+}
+
+.main-nav li {
+  display: inline-block;
+  margin-top: 35px;
+  margin-right: 50px;
+}
+
+.main-nav li a:link,
+.main-nav li a:visited {
+  text-decoration: none;
+  color: #000000;
+}
+
+.main-nav li a:hover,
+.main-nav li a:active {
+  color: #000000;
+}
