@@ -42,3 +42,12 @@ body {
 .main-nav li a:active {
   color: #000000;
 }
+
+.user-profile {
+  color: blue;
+}
+
+.user-profile img {
+  height: 40px;
+  width: 40px;
+}

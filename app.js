@@ -9,6 +9,7 @@ const Auth0Strategy = require('passport-auth0');
 dotenv.config({ path: './config.env' });
 
 const authRouter = require('./routes/authRoutes');
+const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
 
@@ -56,16 +57,8 @@ passport.deserializeUser(function (user, done) {
   done(null, user);
 });
 
-// ---
-app.use((req, res, next) => {
-  res.locals.authenticated = req.isAuthenticated();
-  next();
-});
-
+// ROUTES
+app.use('/', viewRouter);
 app.use('/', authRouter);
-
-app.use('/', (req, res, next) => {
-  res.render('base');
-});
 
 module.exports = app;

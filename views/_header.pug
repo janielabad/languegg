@@ -3,6 +3,7 @@ header.header
     h1.title Languegg 
     ul.main-nav 
       if authenticated
+        li: a(href='/user') #{user.nickname}
         li: a(href='/logout') Logout
       else 
         li: a(href='/login') Login

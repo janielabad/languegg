@@ -11,14 +11,20 @@ const queryString = require('querystring');
 
 exports.callback = (req, res, next) => {
   passport.authenticate('auth0', (err, user, info) => {
-    if (err) return next(err);
+    if (err) {
+      return next(err);
+    }
 
     // if authentication fails, go back to login page
-    if (!user) return res.redirect('/login');
+    if (!user) {
+      return res.redirect('/login');
+    }
 
     // establish login session
     req.logIn(user, (err) => {
-      if (err) return next(err);
+      if (err) {
+        return next(err);
+      }
 
       const returnTo = req.session.returnTo;
       delete req.session.returnTo;
@@ -50,4 +56,18 @@ exports.logout = (req, res) => {
   });
 
   res.redirect(logoutURL);
+};
+
+exports.protect = (req, res, next) => {
+  if (req.user) {
+    return next();
+  }
+
+  req.session.returnTo = req.originalUrl;
+  res.redirect('/login');
+};
+
+exports.loggedIn = (req, res, next) => {
+  res.locals.authenticated = req.isAuthenticated();
+  next();
 };

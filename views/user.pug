@@ -1,0 +1,9 @@
+extends base
+
+block content
+  .row
+    .user-profile
+      p Hello, #{user.nickname}!
+      img(src=user.picture)
+      //- pre
+      //-   code #{userProfile}
