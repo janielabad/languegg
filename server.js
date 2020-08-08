@@ -1,23 +1,17 @@
 const dotenv = require('dotenv');
-const mysql = require('mysql');
+const db = require('./db');
 
 dotenv.config({ path: './config.env' });
 const app = require('./app');
 
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: process.env.DB_USER,
-  password: process.env.DB_PW,
-  database: 'languegg',
-});
-
-db.connect((err) => {
-  if (err) {
-    return console.log('Error connecting to the database.');
-  }
-
-  console.log('Database connection successful!');
-});
+db.sequelize
+  .sync({ force: true })
+  .then(() => {
+    console.log('DB synced!');
+  })
+  .catch((err) => {
+    console.log('Error syncing DB!', err);
+  });
 
 const server = app.listen(process.env.PORT, () => {
   console.log(`App running on port ${process.env.PORT}...`);

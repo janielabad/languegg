@@ -10,13 +10,19 @@ dotenv.config({ path: './config.env' });
 
 const authRouter = require('./routes/authRoutes');
 const viewRouter = require('./routes/viewRoutes');
+const userRouter = require('./routes/userRoutes');
 
 const app = express();
 
+// set template engine
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
+// serve static files
 app.use(express.static(path.join(__dirname, 'public')));
+
+// body parser
+app.use(express.json({ limit: '10kb' }));
 
 // session configuration
 const sessionConfig = {
@@ -60,5 +66,6 @@ passport.deserializeUser(function (user, done) {
 // ROUTES
 app.use('/', viewRouter);
 app.use('/', authRouter);
+app.use('/users', userRouter);
 
 module.exports = app;
