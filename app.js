@@ -8,6 +8,8 @@ const Auth0Strategy = require('passport-auth0');
 
 dotenv.config({ path: './config.env' });
 
+const OperError = require('./utils/operError');
+const errorHandler = require('./controllers/errorController');
 const authRouter = require('./routes/authRoutes');
 const viewRouter = require('./routes/viewRoutes');
 const userRouter = require('./routes/userRoutes');
@@ -26,7 +28,7 @@ app.use(express.json({ limit: '10kb' }));
 
 // session configuration
 const sessionConfig = {
-  secret: 'runnyyolksaretheBEST',
+  secret: process.env.SESSION_SECRET,
   cookie: {},
   resave: false,
   saveUninitialized: false,
@@ -66,6 +68,12 @@ passport.deserializeUser(function (user, done) {
 // ROUTES
 app.use('/', viewRouter);
 app.use('/', authRouter);
-app.use('/users', userRouter);
+app.use('/api/v1/users', userRouter);
+
+app.all('*', (req, res, next) => {
+  next(new OperError(`${req.originalUrl} does not exist on this server.`), 404);
+});
+
+app.use(errorHandler);
 
 module.exports = app;
