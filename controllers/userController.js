@@ -1,6 +1,6 @@
 const db = require('../db');
 const User = db.users;
-const Op = db.Sequelize.op; // for operators
+// const Op = db.Sequelize.op; // for operators
 
 const catchAsyncErr = require('../utils/catchAsyncErr');
 

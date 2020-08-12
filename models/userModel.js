@@ -2,7 +2,10 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize, Sequelize) => {
   return sequelize.define('user', {
-    user_id: DataTypes.STRING(35),
+    user_id: {
+      type: DataTypes.STRING(35),
+      unique: true,
+    },
     known_language: DataTypes.STRING(5),
     nickname: {
       type: DataTypes.STRING(15),
