@@ -2,6 +2,9 @@ const passport = require('passport');
 const util = require('util');
 const queryString = require('querystring');
 
+const catchAsyncErr = require('../utils/catchAsyncErr');
+const OperError = require('../utils/operError');
+
 (exports.login = passport.authenticate('auth0', {
   scope: 'openid email profile',
 })),
@@ -12,7 +15,7 @@ const queryString = require('querystring');
 exports.callback = (req, res, next) => {
   passport.authenticate('auth0', (err, user, info) => {
     if (err) {
-      return next(err);
+      return next(new OperError('Login failed. Please try again.', 401));
     }
 
     // if authentication fails, go back to login page
@@ -23,7 +26,12 @@ exports.callback = (req, res, next) => {
     // establish login session
     req.logIn(user, (err) => {
       if (err) {
-        return next(err);
+        return next(
+          new OperError(
+            'Failed to establish login session. Please try again.',
+            401
+          )
+        );
       }
 
       const returnTo = req.session.returnTo;
