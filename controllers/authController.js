@@ -2,6 +2,12 @@ const passport = require('passport');
 const util = require('util');
 const queryString = require('querystring');
 
+const db = require('../db');
+const { QueryTypes } = db.sequelize;
+const User = db.users;
+
+const catchAsyncErr = require('../utils/catchAsyncErr');
+
 (exports.login = passport.authenticate('auth0', {
   scope: 'openid email profile',
 })),
@@ -28,6 +34,10 @@ exports.callback = (req, res, next) => {
 
       const returnTo = req.session.returnTo;
       delete req.session.returnTo;
+
+      // save
+      saveUser(user.id);
+
       res.redirect(returnTo || '/');
     });
   })(req, res, next);
@@ -71,3 +81,9 @@ exports.loggedIn = (req, res, next) => {
   res.locals.authenticated = req.isAuthenticated();
   next();
 };
+
+const saveUser = catchAsyncErr(async (id) => {
+  if (!(await User.findByPk(id))) {
+    await User.create({ user_id: id });
+  }
+});
