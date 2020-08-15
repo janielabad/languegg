@@ -5,7 +5,7 @@ dotenv.config({ path: './config.env' });
 const app = require('./app');
 
 db.sequelize
-  .sync({ force: true })
+  .sync()
   .then(() => {
     console.log('DB synced!');
   })
